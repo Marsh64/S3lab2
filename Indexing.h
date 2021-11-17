@@ -8,7 +8,7 @@
 #include "Sequence.h"
 #include "Person.h"
 
-class IndexForPerson {
+class IndexingForPerson {
 private:
     int makeAttrib(Sequence<std::string> SeqOfAttrib){
         int a;
@@ -53,8 +53,8 @@ public:
         bool (*CmpAge)(const int&);
     };
 
-    Dictionary<std::string, Person*>* Indexing(Sequence<Person>& SeqOfPerson, Attributies attrib){
-        Dictionary<std::string, Person*>* index;
+    Dictionary<std::string, Person*, hashstr>* Indexing(Sequence<Person>& SeqOfPerson, Attributies attrib){
+        Dictionary<std::string, Person*, hashstr>* index;
 
         for (int i = 0; i < SeqOfPerson.GetLength(); i++){
             std::string tohash = "";

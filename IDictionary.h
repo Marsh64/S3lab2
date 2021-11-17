@@ -7,8 +7,20 @@
 #include <iostream>
 #include <string>
 #include "DynamicArray.cpp"
+static int hashstr(const std::string& key, size_t size)
+{
+    int asciisum = 0;
+    for (char i : key)
+    {
+        asciisum += i;
+    }
+    return int (asciisum % size);
+}
+static int hashint(const int& key, size_t size){
+    return key % size;
+}
 
-template <class TKey, class TElement>
+template <class TKey, class TElement, int (*hashfunction)(const TKey&, size_t)>
 class Dictionary {
 private:
     struct Node{
@@ -22,18 +34,6 @@ private:
     //size_t capasity; //Сколько ячеек в массиве
     size_t size = table.GetLenght(); //Кол-во ячеек в массиве
     size_t amount; //Кол-во элементов во всей таблице
-
-    // Самая простоя хеш-функция. Считает сумму ASCII кодов, делит на константу и
-    // получает остаток от деления.
-    static int hash(const std::string& str, size_t size)
-    {
-        int asciisum = 0;
-        for (char i : str)
-        {
-            asciisum += i;
-        }
-        return int (asciisum % size);
-    }
 
 
     void Magnification(){
@@ -55,7 +55,7 @@ private:
 
             for (int index = 0; index < table.GetLenght(); index++){
                 for (auto temp = table[index]; temp != nullptr; temp = temp->next){
-                    int newindex = hash(temp->key, newsize);
+                    int newindex = hashfunction(temp->key, newsize);
 
                     if (newtable[newindex] == nullptr){
                         newtable.Set(newindex, new Node{temp->key, temp->element, nullptr});
@@ -85,13 +85,12 @@ private:
             //table.Delete_DynamicArray();
             table = newtable;
         }
-    }//Увеличивает таблицу, пересобирает//TODO вроде готово
+    }//Увеличивает таблицу, пересобирает
 
 public:
     class AbsenceOfIndex{};
 
-    Dictionary()
-    {
+    Dictionary(){
         table.Resize(8);
         amount = 0;
         size = table.GetLenght();
@@ -114,9 +113,15 @@ public:
     };
     //Все проверить, сделать копирующий конструктор, перегрузить операторы
 
+    Dictionary(const Dictionary& dict){
+        table = dict.table;
+        size = dict.size;
+        amount = dict.amount;
+
+    }
 
     void Add(TKey key, const TElement& element){
-        int index = hash(key, size);
+        int index = hashfunction(key, size);
         amount+=1;
 
         if (table[index] == nullptr){
@@ -131,10 +136,10 @@ public:
         tmp->next = new Node{key, element, nullptr};
 
         Magnification();
-    };//Добавить элемент с заданным ключом. //TODO вроде готово
+    };//Добавить элемент с заданным ключом.
 
     void Remove(TKey key){
-        int index = hash(key, size);
+        int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             throw AbsenceOfIndex();
@@ -148,9 +153,9 @@ public:
         }
     };//Удаляет элемент с заданным ключом.
     // Выбрасывает исключение, если заданный ключ отсутствует в таблице.
-    // (Удаляет все элементы с этим ключом)//TODO вроде готово
+    // (Удаляет все элементы с этим ключом)
     const DynamicArray<TElement>& Get(TKey key){
-        int index = hash(key, size);
+        int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             throw AbsenceOfIndex();
@@ -164,77 +169,36 @@ public:
         }
 
         return &arr;
-    }//Дает массив элементов таблицы с этим ключом//TODO вроде готово
+    }//Дает массив элементов таблицы с этим ключом
     const TElement& GetOne(TKey key){
-        int index = hash(key, size);
+        int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             throw AbsenceOfIndex();
 
         return table[index]->element;
-    } //Дает первый элемент из столбца с этим ключом из таблицы//TODO готово
+    } //Дает первый элемент из столбца с этим ключом из таблицы
     bool ContainsKey(TKey key){
-        int index = hash(key, size);
+        int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             return false;
         else
             return true;
-    };//Проверка, что в таблице уже есть элемент с заданным ключом.//TODO готово
+    };//Проверка, что в таблице уже есть элемент с заданным ключом.
     int GetCollumn(){
         return size;
-    }//Дает кол-во столбцов в словаре//TODO готово
+    }//Дает кол-во столбцов в словаре
     int GetCapasity(){
         return amount;
-    }//Дает кол-во элементов в словаре//TODO готово
-};
+    }//Дает кол-во элементов в словаре
 
-
-/*
-public:
-
-
-    // Вставляет элемент в таблицу
-    void push ( string firstname, string lastname, int age )
-    {
-        int hashNumber = hash(firstname);
-        Person *pers = new Person(firstname, lastname, age);
-        Person *place = table[hashNumber];
-        if ( place == NULL )
-        {
-            table[hashNumber] = pers;
-            return;
-        }
-
-        while ( place->next != NULL )
-        {
-            place = place->next;
-        }
-        place->next = pers;
-    }
-
-    // Получает элемент из таблицы по его имени.
-    Person* find ( string firstname )
-    {
-        int hashNumber = hash ( firstname );
-        Person *result = table[hashNumber];
-        if ( !result )
-        {
-            cout << "Element not found" << endl;
-            return NULL;
-        }
-        while ( result->firstname != firstname )
-        {
-            if ( !result->next )
-            {
-                cout << "Element not found" << endl;
-                break;
-            }
-            result = result->next;
-        }
-        return result;
+    Dictionary<TKey, TElement, hashfunction> &operator = (Dictionary<TKey, TElement, hashfunction> dict){
+        std::swap(table, dict.table);
+        size = dict.size;
+        amount = dict.amount;
+        return *this;
     }
 };
- */
 
 #endif //S3_LABORATORY_WORK_2_IDICTIONARY_H

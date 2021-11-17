@@ -68,6 +68,25 @@ public:
     }//Возвращает длину последовательности
 
     //Операции
+    T Pop(){
+        if (dynamicArray.GetLenght() == 0)
+            return;
+
+        T item = dynamicArray[dynamicArray.GetLenght() - 1];
+        dynamicArray.Resize(dynamicArray.GetLenght() - 1);
+        return item;
+    }//Удаляет последний элемент в последовательности и возвращает его
+    void Remove(int from, int to){
+        if (from < 0 || from >= dynamicArray.length()) throw IndexOutOfRange();
+        if (to < 0 || to >= dynamicArray.length()) throw IndexOutOfRange();
+
+        if (from >= to) return;
+
+        for (int i = 0; i + to < dynamicArray.length(); i++) {
+            dynamicArray[i + from] = dynamicArray[i + to];
+        }
+        dynamicArray.Resize(dynamicArray.length() - to + from);
+    }//Удаляет с элемента с индексом from до элемента с индексом to не включительно
     void Append(T item){
         dynamicArray.Resize(dynamicArray.GetLenght() + 1);
         dynamicArray[dynamicArray.GetLenght() - 1] = item;
@@ -106,6 +125,12 @@ public:
     ArraySequence<T> &operator = (ArraySequence<T> n_dynamicArray){
         dynamicArray = n_dynamicArray.dynamicArray;
         return *this;
+    }
+
+    T &operator[](int index) {
+        if (index < 0 || index >= GetLength())
+            throw IndexOutOfRange();
+        return dynamicArray[index];
     }
 };
 

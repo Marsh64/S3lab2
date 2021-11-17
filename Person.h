@@ -53,6 +53,18 @@ public:
     unsigned int GetAge(){
         return (2021 - date.yearOB);
     }
+
+    bool operator == (const Person &p) const {
+        return  this->firstname == p.firstname && this->middlename == p.middlename && p.lastname == this->lastname
+            && this->date.yearOB == p.date.yearOB && this->date.monthOB == p.date.monthOB && this->date.dayOB == p.date.dayOB;
+    }
+
+    friend std::ostream& operator<< (std::ostream &out, Person &p) {
+        return std::cout << "   Name: " << p.firstname  << " " << p.middlename << " " << p.lastname
+            << "; DateOB: "<< p.date.dayOB <<"."<< p.date.monthOB <<"."<< p.date.yearOB << ";";
+    }
+
+
 };
 
 

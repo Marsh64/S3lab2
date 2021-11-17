@@ -5,6 +5,7 @@
 #include "BarGraph.h"
 #include "ArraySequence.h"
 #include "Indexing.h"
+#include "Caching.h"
 int main() {
 
     Dictionary<std::string,int> dick;

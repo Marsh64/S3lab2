@@ -9,13 +9,13 @@
 #include "Person.h"
 
 std::string SignsToHashByName(Person persone){
-    return persone.GetName();
+    return persone.GetFirstName();
 }
 
 class BarGraph {
 public:
-    const Dictionary<std::string, int>& SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
-        Dictionary<std::string, int> dict;
+    const Dictionary<std::string, int, hashstr>& SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
+        Dictionary<std::string, int, hashstr> dict;
 
         for (int i = 0; i < list->GetLength(); i++){
             if (dict.ContainsKey(SignsToHash(list->Get(i)))){

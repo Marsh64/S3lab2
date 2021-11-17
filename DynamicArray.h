@@ -44,17 +44,12 @@ public:
     void Resize(int newLenght); //Изменяет длину массива доступную пользователю
 
     DynamicArray<T> &operator = (DynamicArray<T> dynamicArray) {
-        //Resize(dynamicArray.GetLenght());
-        //size = dynamicArray.GetLenght();
-        //lenght = dynamicArray.GetCountMemory();
-        //for (int i = 0; i < lenght; i++) {
-        //    array[i] = dynamicArray.array[i];
-        //}
         std::swap(array, dynamicArray.array);
         size = dynamicArray.size;
         lenght = dynamicArray.lenght;
         return *this;
     }
+
     T  &operator [](int index){
         if (index < 0 || index >= lenght){
             throw IndexOutOfRange();
