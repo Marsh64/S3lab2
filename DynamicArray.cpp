@@ -2,6 +2,10 @@
 // Created by adm on 24.10.2021.
 //
 
+
+#ifndef S3_LABORATORY_WORK_2_DYNAMICARRAY_CPP
+#define S3_LABORATORY_WORK_2_DYNAMICARRAY_CPP
+
 #include "DynamicArray.h"
 template <class T>
 void DynamicArray<T>::Resize(int newLenght /* подразумевается место для пользователя*/){
@@ -22,9 +26,9 @@ void DynamicArray<T>::Resize(int newLenght /* подразумевается м�
     if (newLenght == lenght){return;}// длина не изменится
 
     if (newLenght < lenght){
-        for (int i = newLenght; i < lenght; i++){
-            array[i] = nullptr;
-        }
+        //for (int i = newLenght; i < lenght; i++){
+        //    array[i] = nullptr;
+        //}
 
         lenght = newLenght;
         return;
@@ -140,3 +144,5 @@ DynamicArray<T> :: ~DynamicArray(){
     size = 0;
     lenght = 0;
 }
+
+#endif

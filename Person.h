@@ -10,9 +10,9 @@ class Person // Класс, который содержит немного ин�
 {
 private:
     struct DateOfBirth{
+        unsigned int dayOB;
         unsigned int monthOB;
         unsigned int yearOB;
-        unsigned int dayOB;
     };
     std::string firstname;
     std::string middlename;

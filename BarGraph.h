@@ -14,7 +14,7 @@ std::string SignsToHashByName(Person persone){
 
 class BarGraph {
 public:
-    const Dictionary<std::string, int, hashstr>& SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
+    Dictionary<std::string, int, hashstr> SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
         Dictionary<std::string, int, hashstr> dict;
 
         for (int i = 0; i < list->GetLength(); i++){

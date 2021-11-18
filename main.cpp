@@ -1,13 +1,126 @@
 #include <iostream>
-//#include "IHashTableHARD.h"
 #include "IDictionary.h"
-#include "string"
+//#include "string"
 #include "BarGraph.h"
 #include "ArraySequence.h"
 #include "Indexing.h"
 #include "Caching.h"
+
+#include "Person.h"
+
+ArraySequence<Person> MakeSequenceOfRandomPerson(int count){
+    if (count <= 0)
+        return ArraySequence<Person>();
+
+    srand(679);
+    ArraySequence<Person> sequence;
+    for (int i = 0; i < count; i++){
+        std::string firstname = "";
+        for (int j = 0; j < rand()%5 + 1; j++){
+            char t = (char)(rand()%25 + 97);
+            firstname+=t;
+        }
+
+        std::string middlename = "";
+        for (int j = 0; j < rand()%5 + 1; j++){
+            char t = (char)(rand()%25 + 97);
+            middlename+=t;
+        }
+
+        std::string lastname = "";
+        for (int j = 0; j < rand()%5 + 1; j++){
+            char t = (char)(rand()%25 + 97);
+            lastname+=t;
+        }
+
+        int dayOB = rand()%30 + 1;
+        int monthOB = rand()%12 + 1;
+        int yearOB = rand()%90 + 1930;
+
+        Person p(firstname, middlename, lastname, dayOB, monthOB, yearOB);
+
+        sequence.Append(p);
+    }
+
+    return sequence;
+}
+IndexingForPerson::Attributies MakeAttributies(){
+    std::cout << "По каким атрибутам хотите создать индекс:\n"
+        << "\t1. FirstName\n"
+        << "\t2. MiddleName\n"
+        << "\t3. LastName\n"
+        << "\t4. BirthYear\n"
+        << "\t5. Age\n"
+        << "Нажмите 0 для прекращения выбора." << std::endl;
+
+    IndexingForPerson::Attributies attributies{false, nullptr, false, nullptr, false, nullptr, false, nullptr, false, nullptr};
+    int k = 1;
+    while(k){
+        std::cin >> k;
+        if (k > 5 || k < 0){
+            std::cout << "Введено неправильное значение!!!\n";
+            continue;
+        }
+
+        if (k == 1)
+            attributies.FirstName = true;
+        if (k == 2)
+            attributies.MiddleName = true;
+        if (k == 3)
+            attributies.LastName = true;
+        if (k == 4)
+            attributies.BirthYear = true;
+        if (k == 5)
+            attributies.Age = true;
+    }
+
+    std::cout << "Хотите ли вы использовать функции для индексирования?(0, 1)\n";
+    int cmpTF;
+    std::cin >> cmpTF;
+    if(cmpTF){
+        int fatr = 1;
+        while(fatr){
+            std::cout << "Для какого атрибута хотите добавить функцию:\n"
+                      << "\t1. FirstName\n"
+                      << "\t2. MiddleName\n"
+                      << "\t3. LastName\n"
+                      << "\t4. BirthYear\n"
+                      << "\t5. Age\n"
+                      << "Нажмите 0 для прекращения выбора." << std::endl;
+            std::cin >> fatr;
+            if (fatr > 5 || fatr < 0) {
+                std::cout << "Введено неправильное значение!!!\n";
+                continue;
+            }
+
+            std::cout << "Какой тип функции для арибута хотите использовать:\n"
+                      << "\t1. ==\n"
+                      << "\t2. >\n"
+                      << "\t3. <\n"
+                      << "\t4. !=\n"
+                      << "Нажмите 0 для прекращения выбора." << std::endl;
+            int fcmp;
+            std::cin >> fcmp;
+
+            //сделать много функций в namespace а потом их раскидывать
+
+
+        }
+
+
+
+    }
+
+
+}
+
 int main() {
 
+    ArraySequence<Person> p = MakeSequenceOfRandomPerson(100);
+    std::cout << "Hello, World!" << std::endl;
+    std::cout << p.Get(50) << std::endl;
+    std::cout << p.Get(60) << std::endl;
+    /*
     Dictionary<std::string,int> dick;
     int cost1 = 2500;
     int cost2 = 2600;
@@ -31,7 +144,7 @@ int main() {
     Sequence<Person> list();
     list().Append(p1);
 
-    Dictionary<std::string, int> bargraph(graph.SplittingByName(*list, SignsToHashByName(Person)));
+    //Dictionary<std::string, int> bargraph(graph.SplittingByName(*list, SignsToHashByName(Person)));
     //IHashTable<std::string> map();
 
     //bool b = map().Add(a);

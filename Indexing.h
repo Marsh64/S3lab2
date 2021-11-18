@@ -8,9 +8,10 @@
 #include "Sequence.h"
 #include "Person.h"
 
+
 class IndexingForPerson {
 private:
-    int makeAttrib(Sequence<std::string> SeqOfAttrib){
+    int makeAttrib(Sequence<std::string>& SeqOfAttrib){
         int a;
         if (SeqOfAttrib.GetLength() != 0){
             a = SeqOfAttrib.GetLength();
@@ -40,6 +41,7 @@ private:
     }
 
 public:
+
     struct Attributies{
         bool FirstName;
         bool (*CmpFirstName)(const std::string&);

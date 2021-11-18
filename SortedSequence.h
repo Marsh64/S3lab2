@@ -11,31 +11,30 @@
 template<class T>
 class SortedSequence : private ArraySequence<T> {
 private:
-    bool cmp_default(const T& t1, const T& t2) {return t1 > t2;}
-
+    static bool cmp_default(const T& t1, const T& t2) {return t1 > t2;}
     bool(*cmp)(const T& t1, const T& t2) = cmp_default;
 public:
-    class IndexOutOfRange : ArraySequence<T> :: IndexOutOfRange{};
 
+    class IndexOutOfRange : ArraySequence<T> :: IndexOutOfRange{};
     SortedSequence() : ArraySequence<T>(){};
 
-    const T& Get(int index){
-        return this->Get(index);
+    T& Get(int index){
+        return this->ArraySequence<T>::Get(index);
     }
-    const T& GetFirst(){
-        return this->GetFirst();
+    T GetFirst(){
+        return this->ArraySequence<T>::GetFirst();
     }
-    const T& GetLast(){
-        return this->GetLast();
+    T GetLast(){
+        return this->ArraySequence<T>::GetLast();
     }
     int GetLenght(){
-        return this->GetLength();
+        return this->ArraySequence<T>::GetLength();
     }
     void Remove(int from, int to){
-        this->Remove(from, to);
+        this->ArraySequence<T>::Remove(from, to);
     }
     void RemoveLast(){
-        this->Pop();//TODO а он значение возвращает, что сделать
+        this->ArraySequence<T>::Pop();//TODO а он значение возвращает, что сделать
     }
 
     void Add(const T& ob){
@@ -60,7 +59,7 @@ public:
     }//Вставляет элемнет в нужную позицию(элементов становитсья на 1 больше)
 
     T &operator[](int index) {
-        return this->Get(index);
+        return this->ArraySequence<T>::operator[](index);
     }//TODO что блять не так
 
 };

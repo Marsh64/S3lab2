@@ -26,6 +26,7 @@ private:
     SortedSequence<NodePerson> cashe;//TODO что с тобой блять не так
     //Dictionary<int, Person*, hashint> dict;
     Sequence<Person>* seq;
+
     size_t cachesize;
 public:
     Caching(Sequence<Person>* SeqOfPerson, size_t newcachesize){
@@ -65,10 +66,9 @@ public:
         }
         else{
             cashe.RemoveLast();
-            cashe.Add({1, person});//TODO заебала
+            cashe.Add(NodePerson{1, new Person(std::move(person))});//TODO заебала
         }
     }
-
 };
 
 
