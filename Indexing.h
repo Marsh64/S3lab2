@@ -8,6 +8,27 @@
 #include "Sequence.h"
 #include "Person.h"
 
+namespace CmpFuncForAttributies{
+    template<typename T>
+    bool cmpEquals(const T& a, const T& b){
+        return (a == b);
+    }// ==
+
+    template<class T>
+    bool cmpLess(const T& a, const T& b){
+        return (a < b);
+    }// <
+
+    template<class T>
+    bool cmpBigger(const T& a, const T& b){
+        return (a > b);
+    }// >
+
+    template<class T>
+    bool cmpNoEquals(const T& a, const T& b){
+        return (a != b);
+    }// !=
+}
 
 class IndexingForPerson {
 private:
@@ -44,15 +65,20 @@ public:
 
     struct Attributies{
         bool FirstName;
-        bool (*CmpFirstName)(const std::string&);
+        std::string cmpfname;
+        bool (*CmpFirstName)(const std::string&, const std::string&);
         bool MiddleName;
-        bool (*CmpMiddleName)(const std::string&);
+        std::string cmpmname;
+        bool (*CmpMiddleName)(const std::string&, const std::string&);
         bool LastName;
-        bool (*CmpLastName)(const std::string&);
+        std::string cmplname;
+        bool (*CmpLastName)(const std::string&, const std::string&);
         bool BirthYear;
-        bool (*CmpBirthYear)(const int&);
+        int cmpby;
+        bool (*CmpBirthYear)(const int&, const int&);
         bool Age;
-        bool (*CmpAge)(const int&);
+        int cmpage;
+        bool (*CmpAge)(const int&, const int&);
     };
 
     Dictionary<std::string, Person*, hashstr>* Indexing(Sequence<Person>& SeqOfPerson, Attributies attrib){
@@ -64,7 +90,7 @@ public:
 
             if (attrib.FirstName){
                 if (attrib.CmpFirstName != nullptr){
-                    if (attrib.CmpFirstName(SeqOfPerson.Get(i).GetFirstName()))
+                    if (attrib.CmpFirstName(SeqOfPerson.Get(i).GetFirstName(), attrib.cmpfname))
                         tohash += SeqOfPerson.Get(i).GetFirstName();
                 }
                 else
@@ -72,7 +98,7 @@ public:
             }
             if (attrib.MiddleName){
                 if (attrib.CmpMiddleName != nullptr){
-                    if (attrib.CmpMiddleName(SeqOfPerson.Get(i).GetMiddleName()))
+                    if (attrib.CmpMiddleName(SeqOfPerson.Get(i).GetMiddleName(), attrib.cmpmname))
                         tohash += SeqOfPerson.Get(i).GetMiddleName();
                 }
                 else
@@ -80,7 +106,7 @@ public:
             }
             if (attrib.LastName){
                 if (attrib.CmpLastName != nullptr){
-                    if (attrib.CmpLastName(SeqOfPerson.Get(i).GetLastName()))
+                    if (attrib.CmpLastName(SeqOfPerson.Get(i).GetLastName(), attrib.cmplname))
                         tohash += SeqOfPerson.Get(i).GetLastName();
                 }
                 else
@@ -88,7 +114,7 @@ public:
             }
             if (attrib.BirthYear){
                 if (attrib.CmpBirthYear != nullptr){
-                    if (attrib.CmpBirthYear(SeqOfPerson.Get(i).GetBirthYear()))
+                    if (attrib.CmpBirthYear(SeqOfPerson.Get(i).GetBirthYear(), attrib.cmpby))
                         tohash += std::to_string(SeqOfPerson.Get(i).GetBirthYear());
                 }
                 else
@@ -96,7 +122,7 @@ public:
             }
             if (attrib.Age){
                 if (attrib.CmpAge != nullptr){
-                    if (attrib.CmpAge(SeqOfPerson.Get(i).GetAge()))
+                    if (attrib.CmpAge(SeqOfPerson.Get(i).GetAge(), attrib.cmpage))
                         tohash += std::to_string(SeqOfPerson.Get(i).GetAge());
                 }
                 else

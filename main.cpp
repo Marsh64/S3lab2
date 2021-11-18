@@ -3,10 +3,10 @@
 //#include "string"
 #include "BarGraph.h"
 #include "ArraySequence.h"
-#include "Indexing.h"
-#include "Caching.h"
-
 #include "Person.h"
+#include "Indexing.h"
+
+#include "Caching.h"
 
 ArraySequence<Person> MakeSequenceOfRandomPerson(int count){
     if (count <= 0)
@@ -44,6 +44,7 @@ ArraySequence<Person> MakeSequenceOfRandomPerson(int count){
 
     return sequence;
 }
+
 IndexingForPerson::Attributies MakeAttributies(){
     std::cout << "По каким атрибутам хотите создать индекс:\n"
         << "\t1. FirstName\n"
@@ -53,8 +54,12 @@ IndexingForPerson::Attributies MakeAttributies(){
         << "\t5. Age\n"
         << "Нажмите 0 для прекращения выбора." << std::endl;
 
-    IndexingForPerson::Attributies attributies{false, nullptr, false, nullptr, false, nullptr, false, nullptr, false, nullptr};
+    IndexingForPerson::Attributies attributies{false, "", nullptr, false,
+                                               "", nullptr, false, "",
+                                               nullptr, false, 0, nullptr,
+                                               false, 0, nullptr};
     int k = 1;
+
     while(k){
         std::cin >> k;
         if (k > 5 || k < 0){
@@ -88,7 +93,7 @@ IndexingForPerson::Attributies MakeAttributies(){
                       << "\t5. Age\n"
                       << "Нажмите 0 для прекращения выбора." << std::endl;
             std::cin >> fatr;
-            if (fatr > 5 || fatr < 0) {
+            if (fatr > 5 || fatr <= 0) {
                 std::cout << "Введено неправильное значение!!!\n";
                 continue;
             }
@@ -97,25 +102,95 @@ IndexingForPerson::Attributies MakeAttributies(){
                       << "\t1. ==\n"
                       << "\t2. >\n"
                       << "\t3. <\n"
-                      << "\t4. !=\n"
-                      << "Нажмите 0 для прекращения выбора." << std::endl;
+                      << "\t4. !=\n";
             int fcmp;
             std::cin >> fcmp;
 
-            //сделать много функций в namespace а потом их раскидывать
+            int cmpint;
+            std::string cmpstr;
 
+            std::cout << "С чем хотите сравнить?:\n";
+            if (fatr < 4)
+                std::cin >> cmpstr;
+            else
+                std::cin >> cmpint;
 
+            switch(fatr){
+                case 1:
+                    attributies.cmpfname = cmpstr;
+                    switch(fcmp){
+                        case 1:
+                            attributies.CmpFirstName = CmpFuncForAttributies::cmpEquals<std::string>; break;
+                        case 2:
+                            attributies.CmpFirstName = CmpFuncForAttributies::cmpBigger<std::string>; break;
+                        case 3:
+                            attributies.CmpFirstName = CmpFuncForAttributies::cmpLess<std::string>; break;
+                        case 4:
+                            attributies.CmpFirstName = CmpFuncForAttributies::cmpNoEquals<std::string>; break;
+                    }
+                    break;
+                case 2:
+                    attributies.cmpmname = cmpstr;
+                    switch(fcmp){
+                        case 1:
+                            attributies.CmpMiddleName = CmpFuncForAttributies::cmpEquals<std::string>; break;
+                        case 2:
+                            attributies.CmpMiddleName = CmpFuncForAttributies::cmpBigger<std::string>; break;
+                        case 3:
+                            attributies.CmpMiddleName = CmpFuncForAttributies::cmpLess<std::string>; break;
+                        case 4:
+                            attributies.CmpMiddleName = CmpFuncForAttributies::cmpNoEquals<std::string>; break;
+                    }
+                    break;
+                case 3:
+                    attributies.cmplname = cmpstr;
+                    switch(fcmp){
+                        case 1:
+                            attributies.CmpLastName = CmpFuncForAttributies::cmpEquals<std::string>; break;
+                        case 2:
+                            attributies.CmpLastName = CmpFuncForAttributies::cmpBigger<std::string>; break;
+                        case 3:
+                            attributies.CmpLastName = CmpFuncForAttributies::cmpLess<std::string>; break;
+                        case 4:
+                            attributies.CmpLastName = CmpFuncForAttributies::cmpNoEquals<std::string>; break;
+                    }
+                    break;
+                case 4:
+                    attributies.cmpby = cmpint;
+                    switch(fcmp){
+                        case 1:
+                            attributies.CmpBirthYear = CmpFuncForAttributies::cmpEquals<int>; break;
+                        case 2:
+                            attributies.CmpBirthYear = CmpFuncForAttributies::cmpBigger<int>; break;
+                        case 3:
+                            attributies.CmpBirthYear = CmpFuncForAttributies::cmpLess<int>; break;
+                        case 4:
+                            attributies.CmpBirthYear = CmpFuncForAttributies::cmpNoEquals<int>; break;
+                    }
+                    break;
+                case 5:
+                    attributies.cmpage = cmpint;
+                    switch(fcmp){
+                        case 1:
+                            attributies.CmpAge = CmpFuncForAttributies::cmpEquals<int>; break;
+                        case 2:
+                            attributies.CmpAge = CmpFuncForAttributies::cmpBigger<int>; break;
+                        case 3:
+                            attributies.CmpAge = CmpFuncForAttributies::cmpLess<int>; break;
+                        case 4:
+                            attributies.CmpAge = CmpFuncForAttributies::cmpNoEquals<int>; break;
+                    }
+                    break;
+            }
         }
-
-
-
     }
 
-
+    return attributies;
 }
 
 int main() {
 
+    IndexingForPerson::Attributies attrib = MakeAttributies();
     ArraySequence<Person> p = MakeSequenceOfRandomPerson(100);
     std::cout << "Hello, World!" << std::endl;
     std::cout << p.Get(50) << std::endl;
