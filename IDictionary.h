@@ -32,14 +32,21 @@ private:
     DynamicArray<Node*> table;
 
     //size_t capasity; //Сколько ячеек в массиве
-    size_t size = table.GetLenght(); //Кол-во ячеек в массиве
+    size_t size = table.GetLength(); //Кол-во ячеек в массиве
     size_t amount; //Кол-во элементов во всей таблице
+
+    friend std::ostream &operator << (std::ostream &cout, Node& nd) {
+        std::cout << '{';
+        std::cout << nd.key << ": " << nd.element;
+        std::cout << '}';
+        return cout;
+    }
 
 
     void Magnification(){
         double occupacity = double (amount)/ size;
         if (occupacity >= 0.75){
-            int newsize = table.GetLenght() * 2;
+            int newsize = table.GetLength() * 2;
 
             int CountMemory;
             if (newsize >= table.GetCountMemory()){
@@ -49,11 +56,11 @@ private:
             }
             DynamicArray<Node*> newtable (newsize, CountMemory);
 
-            for (int i = 0; i < newtable.GetLenght(); i++) {
+            for (int i = 0; i < newtable.GetLength(); i++) {
                 newtable[i] = nullptr;
             }
 
-            for (int index = 0; index < table.GetLenght(); index++){
+            for (int index = 0; index < table.GetLength(); index++){
                 for (auto temp = table[index]; temp != nullptr; temp = temp->next){
                     int newindex = hashfunction(temp->key, newsize);
 
@@ -70,10 +77,10 @@ private:
                 }
             }
 
-            size = newtable.GetLenght();
+            size = newtable.GetLength();
 
             //Удаляем предыдущую
-            for (int i = 0; i < table.GetLenght(); i++) {
+            for (int i = 0; i < table.GetLength(); i++) {
                 auto temp = table[i];
                 while (temp != nullptr) {
                     auto del = temp;
@@ -93,7 +100,10 @@ public:
     Dictionary(){
         table.Resize(8);
         amount = 0;
-        size = table.GetLenght();
+        size = table.GetLength();
+        for (int i = 0; i < size; i++) {
+            table[i] = nullptr;
+        }
     }// По-умолчанию делает словарь из 8 элементов
     explicit Dictionary(int newsize){
         table.Resize(newsize);
@@ -102,7 +112,7 @@ public:
     }
 
     ~Dictionary(){
-        for (int i = 0; i < table.GetLenght(); i++) {
+        for (int i = 0; i < table.GetLength(); i++) {
             auto temp = table[i];
             while (temp != nullptr) {
                 auto del = temp;
@@ -145,15 +155,59 @@ public:
             throw AbsenceOfIndex();
 
         auto temp = table[index];
+        while (table[index]->key == key) {
+            table[index] = temp->next;
+            delete temp;
+            temp = table[index];
+        }
+        Node* predtemp = table[index];
+        temp = table[index]->next;
         while (temp != nullptr) {
-            auto del = temp;
+            if (temp->key == key){
+                auto del = temp;
+                predtemp->next = temp->next;
+                temp = temp->next;
+                delete del;
+                amount--;
+            }
+            predtemp = temp;
             temp = temp->next;
-            delete del;
-            amount-=1;
         }
     };//Удаляет элемент с заданным ключом.
     // Выбрасывает исключение, если заданный ключ отсутствует в таблице.
     // (Удаляет все элементы с этим ключом)
+    DynamicArray<Node> Get_i(int index){
+        if (table[index] == nullptr)
+            throw AbsenceOfIndex();
+
+        DynamicArray<Node> arr;
+
+        for (auto temp = table[index]; temp->next != nullptr; temp = temp->next){
+            arr.Resize(arr.GetLength() + 1);
+            //arr.Relen(arr.Relen() + 1);
+            arr.Set(arr.GetLength() - 1, *temp);
+        }
+
+        return arr;
+    }//дает элемент по индексу в массиве
+
+    /*
+    DynamicArray<TElement> Get_iElement(int index){
+        if (table[index] == nullptr)
+            throw AbsenceOfIndex();
+
+        DynamicArray<TElement> arr;
+
+        for (auto temp = table[index]; temp->next != nullptr; temp = temp->next){
+            arr.Resize(arr.GetLength() + 1);
+            //arr.Relen(arr.Relen() + 1);
+            arr.Set(arr.GetLength() - 1, temp->element);
+        }
+
+        return arr;
+    }//дает элемент по индексу в массиве
+    */
+
     const DynamicArray<TElement>& Get(TKey key){
         int index = hashfunction(key, size);
 
@@ -163,9 +217,9 @@ public:
         DynamicArray<TElement> arr;
 
         for (auto temp = table[index]; temp->next != nullptr; temp = temp->next){
-            arr.Resize(arr.GetLenght() + 1);
+            arr.Resize(arr.GetLength() + 1);
             //arr.Relen(arr.Relen() + 1);
-            arr.Set(arr.GetLenght() - 1, temp->element);
+            arr.Set(arr.GetLength() - 1, temp->element);
         }
 
         return &arr;
@@ -200,5 +254,23 @@ public:
         return *this;
     }
 };
+
+template <class TKey, class TElement, int (*hashfunction)(const TKey&, size_t)>
+std::ostream &operator << (std::ostream &cout, Dictionary<TKey, TElement, hashfunction>& dict) {
+    std::cout << '{';
+    for (int i = 0; i < dict.GetCollumn(); i++) {
+        try {
+            std::cout << dict.Get_i(i);
+            if (i != dict.GetCollumn() - 1) {
+                cout << ", ";
+            }
+        }
+        catch(typename Dictionary<TKey, TElement, hashfunction>::AbsenceOfIndex& err) {
+        }
+    }
+    cout << '}';
+    return cout;
+}
+
 
 #endif //S3_LABORATORY_WORK_2_IDICTIONARY_H

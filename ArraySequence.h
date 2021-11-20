@@ -8,7 +8,7 @@
 #include "DynamicArray.cpp"
 
 template <class T>
-class ArraySequence : Sequence<T>{
+class ArraySequence : public Sequence<T>{
 private:
     DynamicArray<T> dynamicArray;
 public:
@@ -38,13 +38,13 @@ public:
         return dynamicArray.Get(0);
     }//Возвращает первй элемент
     T GetLast(){
-        return dynamicArray.Get(dynamicArray.GetLenght() - 1);
+        return dynamicArray.Get(dynamicArray.GetLength() - 1);
     }//Возвращает последний элемент
     T& Get(int index){
         return dynamicArray.Get(index);
     }//Возвращает элемент по индексу
     ArraySequence<T>* GetSubsequence(int startIndex, int endIndex){
-        if (startIndex >= dynamicArray.GetLenght() || endIndex >= dynamicArray.GetLenght() || startIndex < 0 || endIndex < 0){
+        if (startIndex >= dynamicArray.GetLength() || endIndex >= dynamicArray.GetLength() || startIndex < 0 || endIndex < 0){
             throw IndexOutOfRange();
         }
 
@@ -64,37 +64,36 @@ public:
         return new_arraySequence;
     }//Получить список из всех элементов, начиная с startIndex и заканчивая endIndex
     int GetLength(){
-        return dynamicArray.GetLenght();
+        return dynamicArray.GetLength();
     }//Возвращает длину последовательности
 
     //Операции
     T Pop(){
-        if (dynamicArray.GetLenght() == 0)
+        if (dynamicArray.GetLength() == 0)
             throw IndexOutOfRange();
-        //    return; TODO надо обработать
 
-        T item = dynamicArray[dynamicArray.GetLenght() - 1];
-        dynamicArray.Resize(dynamicArray.GetLenght() - 1);
+        T item = dynamicArray[dynamicArray.GetLength() - 1];
+        dynamicArray.Resize(dynamicArray.GetLength() - 1);
         return item;
     }//Удаляет последний элемент в последовательности и возвращает его
     void Remove(int from, int to){
-        if (from < 0 || from >= dynamicArray.GetLenght()) throw IndexOutOfRange();
-        if (to < 0 || to >= dynamicArray.GetLenght()) throw IndexOutOfRange();
+        if (from < 0 || from >= dynamicArray.GetLength()) throw IndexOutOfRange();
+        if (to < 0 || to >= dynamicArray.GetLength()) throw IndexOutOfRange();
 
         if (from >= to) return;
 
-        for (int i = 0; i + to < dynamicArray.GetLenght(); i++) {
+        for (int i = 0; i + to < dynamicArray.GetLength(); i++) {
             dynamicArray[i + from] = dynamicArray[i + to];
         }
-        dynamicArray.Resize(dynamicArray.GetLenght() - to + from);
+        dynamicArray.Resize(dynamicArray.GetLength() - to + from);
     }//Удаляет с элемента с индексом from до элемента с индексом to не включительно
     void Append(T item){
-        dynamicArray.Resize(dynamicArray.GetLenght() + 1);
-        dynamicArray[dynamicArray.GetLenght() - 1] = item;
+        dynamicArray.Resize(dynamicArray.GetLength() + 1);
+        dynamicArray[dynamicArray.GetLength() - 1] = item;
     }//дабавляет элемент в конец последовательности(при необходимости выделяет доп. ячейки)
     void Prepend(T item){
-        dynamicArray.Resize(dynamicArray.GetLenght() + 1);
-        for (int i = dynamicArray.GetLenght() - 1; i > 0; i++){
+        dynamicArray.Resize(dynamicArray.GetLength() + 1);
+        for (int i = dynamicArray.GetLength() - 1; i > 0; i++){
             dynamicArray[i] = dynamicArray[i - 1];
         }
         dynamicArray[0] = item;
@@ -102,8 +101,8 @@ public:
     void InsertAt(T item, int index){
         if (index < 0 || index > this->GetLength()){throw IndexOutOfRange();}
 
-        dynamicArray.Resize(dynamicArray.GetLenght() + 1);
-        for (int i = dynamicArray.GetLenght() - 1; i > index; i++){
+        dynamicArray.Resize(dynamicArray.GetLength() + 1);
+        for (int i = dynamicArray.GetLength() - 1; i > index; i++){
             dynamicArray[i] = dynamicArray[i - 1];
         }
         dynamicArray[index] = item;
@@ -112,10 +111,10 @@ public:
         auto *new_arraySequence = new ArraySequence<T>;
         //new_arraySequence = ArraySequence<T>();
 
-        for (int i = 0; i < dynamicArray.GetLenght(); i++){
+        for (int i = 0; i < dynamicArray.GetLength(); i++){
             new_arraySequence->Append(dynamicArray.Get(i));
         }
-        for (int i = dynamicArray.GetLenght(); i < list->GetLength() + dynamicArray.GetLenght(); i++){
+        for (int i = dynamicArray.GetLength(); i < list->GetLength() + dynamicArray.GetLength(); i++){
             new_arraySequence->Append(list->Get(i));
         }
 
@@ -134,6 +133,20 @@ public:
         return dynamicArray[index];
     }
 };
+
+template<class T>
+std::ostream &operator << (std::ostream &cout, ArraySequence<T>& arr) {
+    cout << '{';
+    for (int i = 0; i < arr.GetLength(); i++) {
+        cout << arr.Get(i);
+        if (i != arr.GetLength() - 1) {
+            cout << ", ";
+        }
+    }
+    cout << '}';
+    return cout;
+}
+
 
 
 #endif //S3_LABORATORY_WORK_2_ARRAYSEQUENCE_H

@@ -60,11 +60,15 @@ public:
     }
 
     friend std::ostream& operator<< (std::ostream &out, Person &p) {
-        return std::cout << "   Name: " << p.firstname  << " " << p.middlename << " " << p.lastname
-            << "; DateOB: "<< p.date.dayOB <<"."<< p.date.monthOB <<"."<< p.date.yearOB << ";";
+        return std::cout << "[Name: " << p.firstname  << " " << p.middlename << " " << p.lastname
+            << "; DateOB: "<< p.date.dayOB <<"."<< p.date.monthOB <<"."<< p.date.yearOB << "]";
     }
 
-
+    friend std::ostream& operator<< (std::ostream &out, Person *p) {
+        //return std::cout << "[Name: " << p->firstname  << " " << p->middlename << " " << p->lastname
+        //                 << "; DateOB: "<< p->date.dayOB <<"."<< p->date.monthOB <<"."<< p->date.yearOB << "]";
+        return std::cout << *p;
+    }
 };
 
 

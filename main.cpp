@@ -93,7 +93,11 @@ IndexingForPerson::Attributies MakeAttributies(){
                       << "\t5. Age\n"
                       << "Нажмите 0 для прекращения выбора." << std::endl;
             std::cin >> fatr;
-            if (fatr > 5 || fatr <= 0) {
+
+            if (fatr == 0)
+                break;
+
+            if (fatr > 5 || fatr < 0) {
                 std::cout << "Введено неправильное значение!!!\n";
                 continue;
             }
@@ -190,13 +194,21 @@ IndexingForPerson::Attributies MakeAttributies(){
 
 int main() {
 
+
     IndexingForPerson::Attributies attrib = MakeAttributies();
     ArraySequence<Person> p = MakeSequenceOfRandomPerson(100);
+
     std::cout << "Hello, World!" << std::endl;
-    std::cout << p.Get(50) << std::endl;
-    std::cout << p.Get(60) << std::endl;
+    std::cout << attrib;
+    std::cout << p << std::endl;
+
+    Dictionary<std::string, int, hashstr> bardict(BarGraph::SplittingByName(&p, SignsToHashByName));
+    std::cout << bardict;
+
+    //Dictionary<std::string, Person*, hashstr> dict(*IndexingForPerson::Indexing(p, attrib));
+    //std::cout << dict;
     /*
-    Dictionary<std::string,int> dick;
+    Dictionary<std::string,int,hashstr> dick;
     int cost1 = 2500;
     int cost2 = 2600;
     int cost3 = 2700;
@@ -214,6 +226,7 @@ int main() {
     dick.Add("car4", cost4);
     dick.Add("car5", cost5);
 
+    /*
     Person p1("a", "b", 100);
     BarGraph graph;
     Sequence<Person> list();
@@ -225,7 +238,8 @@ int main() {
     //bool b = map().Add(a);
     //std::cout << map().Find(a) << std::endl;
     //std::cout << map().Find(b) << std::endl;
-    /*
+
+
     std::cout << "Hello, World!" << std::endl;
     std::cout << dick.ContainsKey("car") << std::endl;
     std::cout << dick.ContainsKey("car3") << std::endl;
@@ -242,8 +256,9 @@ int main() {
     std::cout << dick.GetOne("car3") << std::endl;
     std::cout << dick.GetOne("car4") << std::endl;
     std::cout << dick.GetOne("car5") << std::endl;
-     */
 
+    std::cout <<dick;
+    */
     //std::cout << dick. << std::endl;
     std::cout << "Hello, World!" << std::endl;
     return 0;

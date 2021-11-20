@@ -60,16 +60,20 @@ public:
 
     T &operator[](int index) {
         return this->ArraySequence<T>::operator[](index);
-    }//TODO что блять не так
-
+    }
 };
 
 template<class T>
-std::ostream& operator<< (std::ostream &out, SortedSequence<T> &seq){
-    for (int i = 0; i < seq.GetLenght(); i++){
-        std::cout << seq.Get(i) << " ";
+std::ostream &operator << (std::ostream &cout, SortedSequence<T> &seq) {
+    cout << '{';
+    for (int i = 0; i < seq.GetLength(); i++) {
+        cout << seq.Get(i);
+        if (i != seq.GetLength() - 1) {
+            cout << ", ";
+        }
     }
-    return std::cout << std::endl;
+    cout << '}';
+    return cout;
 }
 
 #endif //S3_LABORATORY_WORK_2_SORTEDSEQUENCE_H

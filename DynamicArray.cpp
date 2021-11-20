@@ -125,7 +125,7 @@ int DynamicArray<T>::GetCountMemory() {
 }
 
 template <class T>
-int DynamicArray<T>::GetLenght() {
+int DynamicArray<T>::GetLength() {
     return lenght;
 }
 

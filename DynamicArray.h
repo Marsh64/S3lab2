@@ -36,7 +36,7 @@ public:
     //Декомпозиция
     T& Get(int index); //возвращает элемент по индексу
     int GetCountMemory();//Общее число ячеек, под которые выделили память
-    int GetLenght();//Число ячеек, которые может использовать пользователь
+    int GetLength();//Число ячеек, которые может использовать пользователь
 
 
     //Операции над параметрами массива
@@ -57,7 +57,22 @@ public:
 
         return array[index];
     }
+
+
 };
 
+
+template<class T>
+std::ostream &operator << (std::ostream &cout, DynamicArray<T> arr) {
+    std::cout << '{';
+    for (int i = 0; i < arr.GetLength(); i++) {
+        std::cout << arr.Get(i);
+        if (i != arr.GetLength() - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << '}';
+    return cout;
+}
 
 #endif //S3_LABORATORY_WORK_2_DYNAMICARRAY_H

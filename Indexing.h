@@ -32,35 +32,36 @@ namespace CmpFuncForAttributies{
 
 class IndexingForPerson {
 private:
-    int makeAttrib(Sequence<std::string>& SeqOfAttrib){
-        int a;
-        if (SeqOfAttrib.GetLength() != 0){
-            a = SeqOfAttrib.GetLength();
-
-            for (int i = 0; i < a; i++) {
-                a *= 10;
-
-                int b;
-                if (SeqOfAttrib.Get(i) == "FirstName")
-                    b = 1;
-                else if (SeqOfAttrib.Get(i) == "MiddleName")
-                    b = 2;
-                else if (SeqOfAttrib.Get(i) == "LastName")
-                    b = 3;
-                else if (SeqOfAttrib.Get(i) == "BirthYear")
-                    b = 4;
-                else if (SeqOfAttrib.Get(i) == "Age")
-                    b = 5;
-
-                a+= b;
-            }
-        }
-        else{
-            a = 0;
-        }
-        return a;
-    }
-
+    /*
+    *int makeAttrib(Sequence<std::string>& SeqOfAttrib){
+    *    int a;
+    *    if (SeqOfAttrib.GetLength() != 0){
+    *        a = SeqOfAttrib.GetLength();
+    *
+    *        for (int i = 0; i < a; i++) {
+    *            a *= 10;
+    *
+    *            int b;
+    *            if (SeqOfAttrib.Get(i) == "FirstName")
+    *                b = 1;
+    *            else if (SeqOfAttrib.Get(i) == "MiddleName")
+    *                b = 2;
+    *            else if (SeqOfAttrib.Get(i) == "LastName")
+    *                b = 3;
+    *            else if (SeqOfAttrib.Get(i) == "BirthYear")
+    *                b = 4;
+    *            else if (SeqOfAttrib.Get(i) == "Age")
+    *                b = 5;
+    *
+    *            a+= b;
+    *        }
+    *    }
+    *    else{
+    *        a = 0;
+    *    }
+    *    return a;
+    *}
+    */
 public:
 
     struct Attributies{
@@ -81,8 +82,10 @@ public:
         bool (*CmpAge)(const int&, const int&);
     };
 
-    Dictionary<std::string, Person*, hashstr>* Indexing(Sequence<Person>& SeqOfPerson, Attributies attrib){
-        Dictionary<std::string, Person*, hashstr>* index;
+
+
+    static Dictionary<std::string, Person*, hashstr>* Indexing(Sequence<Person>& SeqOfPerson, Attributies attrib){
+        auto* index = new Dictionary<std::string, Person*, hashstr>();
 
         for (int i = 0; i < SeqOfPerson.GetLength(); i++){
             std::string tohash = "";
@@ -130,10 +133,45 @@ public:
             }
 
             index->Add(tohash, &SeqOfPerson.Get(i));
-            return index;
         }
+        return index;
     }//все атрибуты переделаются в строку и запишутся в таблицу а в значение положиться указатель на человека с этими атрибутами
 };
 
+std::ostream &operator << (std::ostream &cout, IndexingForPerson::Attributies& attrib) {
+    std::cout << "Атрибуты для индекса{\n";
+    if (attrib.FirstName){
+        if (attrib.CmpFirstName != nullptr)
+            std::cout << "\t FirstName: сравнивается с "<< attrib.cmpfname << ";\n";
+        else
+            std::cout << "\t FirstName;\n";
+    }
+    if (attrib.MiddleName){
+        if (attrib.CmpMiddleName != nullptr)
+            std::cout << "\t MiddleName: сравнивается с "<< attrib.cmpmname << ";\n";
+        else
+            std::cout << "\t MiddleName;\n";
+    }
+    if (attrib.LastName){
+        if (attrib.CmpLastName != nullptr)
+            std::cout << "\t LastName: сравнивается с "<< attrib.cmplname << ";\n";
+        else
+            std::cout << "\t LastName;\n";
+    }
+    if (attrib.BirthYear){
+        if (attrib.CmpBirthYear != nullptr)
+            std::cout << "\t BirthYear: сравнивается с "<< attrib.cmpby << ";\n";
+        else
+            std::cout << "\t BirthYear;\n";
+    }
+    if (attrib.Age){
+        if (attrib.CmpAge != nullptr)
+            std::cout << "\t Age: сравнивается с "<< attrib.cmpage << ";\n";
+        else
+            std::cout << "\t Age;\n";
+    }
+    std::cout << "}\n";
+    return std::cout;
+}
 
 #endif //S3_LABORATORY_WORK_2_INDEXING_H

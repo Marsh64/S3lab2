@@ -23,7 +23,7 @@ private:
         }
     };
 
-    SortedSequence<NodePerson> cashe;//TODO что с тобой блять не так
+    SortedSequence<NodePerson> cache;
     //Dictionary<int, Person*, hashint> dict;
     Sequence<Person>* seq;
 
@@ -32,42 +32,50 @@ public:
     Caching(Sequence<Person>* SeqOfPerson, size_t newcachesize){
         seq = SeqOfPerson;
         cachesize = newcachesize;
-        for (int i = 0; i < cashe.GetLenght(); i++){
-            cashe.Add({1, &SeqOfPerson->Get(i)});
+        for (int i = 0; i < cache.GetLenght(); i++){
+            cache.Add({1, &SeqOfPerson->Get(i)});
         }
     }
 
-    int FindInCashe(const Person& person){
+    int FindInCache(const Person& person){
         for (int i = 0; i < cachesize; i++)
-            if (person == *cashe[i].person)
+            if (person == *cache[i].person)
                 return i;
         return -1;
     }
-    bool ContainInCashe(const Person& person){
+    bool ContainInCache(const Person& person){
         if (cachesize == 0)
             return false;
-        if(FindInCashe(person) >= 0)
+        if(FindInCache(person) >= 0)
             return true;
         else
             return false;
     }
 
     void Add(const Person& person){
-        if (ContainInCashe(person)){
-            int index = FindInCashe(person);
-            //cashe[index].person;
-            //cashe[index].callcount;
-            NodePerson ndm = {cashe[index].callcount + 1, cashe[index].person};
+        if (ContainInCache(person)){
+            int index = FindInCache(person);
+            //cache[index].person;
+            //cache[index].callcount;
+            NodePerson ndm = {cache[index].callcount + 1, cache[index].person};
             if (index == cachesize)
-                cashe.RemoveLast();
+                cache.RemoveLast();
             else
-                cashe.Remove(index, index + 1);
-            cashe.Add(ndm);
+                cache.Remove(index, index + 1);
+            cache.Add(ndm);
         }
         else{
-            cashe.RemoveLast();
-            cashe.Add(NodePerson{1, new Person(std::move(person))});//TODO заебала
+            cache.RemoveLast();
+            cache.Add(NodePerson{1, new Person(person)});
         }
+    }
+
+    const SortedSequence<NodePerson>& GetCache(){
+        return cache;
+    }
+
+    int GetCacheSize(){
+        return cachesize;
     }
 };
 
