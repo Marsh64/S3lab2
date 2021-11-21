@@ -9,10 +9,10 @@
 #include "DynamicArray.cpp"
 static int hashstr(const std::string& key, size_t size)
 {
-    int asciisum = 0;
+    int asciisum = 7;
     for (char i : key)
     {
-        asciisum += i;
+        asciisum = asciisum * 31 + i;
     }
     return int (asciisum % size);
 }
@@ -36,9 +36,9 @@ private:
     size_t amount; //Кол-во элементов во всей таблице
 
     friend std::ostream &operator << (std::ostream &cout, Node& nd) {
-        std::cout << '{';
+        std::cout << '(';
         std::cout << nd.key << ": " << nd.element;
-        std::cout << '}';
+        std::cout << ')';
         return cout;
     }
 
@@ -89,7 +89,6 @@ private:
                 }
             }
 
-            //table.Delete_DynamicArray();
             table = newtable;
         }
     }//Увеличивает таблицу, пересобирает
@@ -159,7 +158,10 @@ public:
             table[index] = temp->next;
             delete temp;
             temp = table[index];
+            if (temp == nullptr)
+                return;
         }
+
         Node* predtemp = table[index];
         temp = table[index]->next;
         while (temp != nullptr) {
@@ -169,27 +171,28 @@ public:
                 temp = temp->next;
                 delete del;
                 amount--;
+                continue;
             }
             predtemp = temp;
             temp = temp->next;
         }
-    };//Удаляет элемент с заданным ключом.
+    };//Удаляет все элемент с заданным ключом.
     // Выбрасывает исключение, если заданный ключ отсутствует в таблице.
-    // (Удаляет все элементы с этим ключом)
+
     DynamicArray<Node> Get_i(int index){
         if (table[index] == nullptr)
             throw AbsenceOfIndex();
 
         DynamicArray<Node> arr;
 
-        for (auto temp = table[index]; temp->next != nullptr; temp = temp->next){
+        for (auto temp = table[index]; temp!= nullptr; temp = temp->next){
             arr.Resize(arr.GetLength() + 1);
             //arr.Relen(arr.Relen() + 1);
             arr.Set(arr.GetLength() - 1, *temp);
         }
 
         return arr;
-    }//дает элемент по индексу в массиве
+    }//дает массив всех элементов по индексу в массиве (то есть те, у кого одинаковый хэш)
 
     /*
     DynamicArray<TElement> Get_iElement(int index){
@@ -216,30 +219,72 @@ public:
 
         DynamicArray<TElement> arr;
 
-        for (auto temp = table[index]; temp->next != nullptr; temp = temp->next){
-            arr.Resize(arr.GetLength() + 1);
-            //arr.Relen(arr.Relen() + 1);
-            arr.Set(arr.GetLength() - 1, temp->element);
+        for (auto temp = table[index]; temp!= nullptr; temp = temp->next){
+            if (temp->key == key){
+                arr.Resize(arr.GetLength() + 1);
+                //arr.Relen(arr.Relen() + 1);
+                arr.Set(arr.GetLength() - 1, temp->element);
+            }
         }
 
         return &arr;
-    }//Дает массив элементов таблицы с этим ключом
+    }//Дает массив значений таблицы с этим ключом
+
+    void Swap(TKey key, TElement newelement){
+        int index = hashfunction(key, size);
+
+        if (table[index] == nullptr)
+            throw AbsenceOfIndex();
+
+        for (auto temp = table[index]; temp != nullptr; temp = temp->next){
+            if (temp->key == key){
+                temp->element = newelement;
+                break;
+            }
+        }
+
+    }//Меняет значение элемента с этим ключом
+
+    const TElement& GetFirstHash(TKey key){
+        int index = hashfunction(key, size);
+
+        //if (table[index] == nullptr)
+        //    throw AbsenceOfIndex();
+
+        for (auto temp = table[index]; temp != nullptr; temp = temp->next){
+            if (temp->key == key){
+                return temp->element;
+            }
+        }
+
+        throw AbsenceOfIndex();
+    }//
+
     const TElement& GetOne(TKey key){
         int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             throw AbsenceOfIndex();
 
+
         return table[index]->element;
-    } //Дает первый элемент из столбца с этим ключом из таблицы
+    } //Дает первый элемент из столбца с хэшем соответствующим данному ключу
+
     bool ContainsKey(TKey key){
         int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             return false;
-        else
-            return true;
+
+        for (auto temp = table[index]; temp != nullptr; temp = temp->next){
+            if (temp->key == key){
+                return true;
+            }
+        }
+
+        return false;
     };//Проверка, что в таблице уже есть элемент с заданным ключом.
+
     int GetCollumn(){
         return size;
     }//Дает кол-во столбцов в словаре

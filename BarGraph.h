@@ -17,20 +17,27 @@ public:
     static Dictionary<std::string, int, hashstr> SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
         Dictionary<std::string, int, hashstr> dict;
 
-        std::cout << "keys: ";
+        //std::cout << "keys: ";
         for (int i = 0 ; i < list->GetLength(); i++){
-            //if (!dict.ContainsKey(SignsToHash(list->Get(i)))) {
+            if (!dict.ContainsKey(SignsToHash(list->Get(i))))
                 dict.Add(SignsToHash(list->Get(i)), 0);
-                std::cout << SignsToHash(list->Get(i)) << ' ';
+                //std::cout << SignsToHash(list->Get(i)) << ' ';
             //}
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
+
+        std::cout << dict << std::endl;
+        //std::cout << dict.GetCollumn() << std::endl;
 
         for (int i = 0; i < list->GetLength(); i++){
             if (dict.ContainsKey(SignsToHash(list->Get(i)))){
-                int count = dict.GetOne(SignsToHash(list->Get(i)));
-                dict.Remove(SignsToHash(list->Get(i)));
-                dict.Add(SignsToHash(list->Get(i)), count + 1);
+                //std::cout << i << std::endl;
+                //std::cout << hashstr(SignsToHash(list->Get(i)), 256) << std::endl;
+                //std::cout << dict.GetFirstHash(SignsToHash(list->Get(i))) + 1 << std::endl;
+                dict.Swap(SignsToHash(list->Get(i)), dict.GetFirstHash(SignsToHash(list->Get(i))) + 1);
+                //int count = dict.GetFirstHash(SignsToHash(list->Get(i)));
+                //dict.Remove(SignsToHash(list->Get(i)));
+                //dict.Add(SignsToHash(list->Get(i)), count + 1);
             }
             else{
                 dict.Add(SignsToHash(list->Get(i)),  1);

@@ -203,10 +203,12 @@ int main() {
     std::cout << p << std::endl;
 
     Dictionary<std::string, int, hashstr> bardict(BarGraph::SplittingByName(&p, SignsToHashByName));
-    std::cout << bardict;
+    std::cout << bardict << std::endl;
 
-    //Dictionary<std::string, Person*, hashstr> dict(*IndexingForPerson::Indexing(p, attrib));
-    //std::cout << dict;
+    std::cout << "indexing!" << std::endl;
+
+    Dictionary<std::string, Person*, hashstr> dict(*IndexingForPerson::Indexing(p, attrib));
+    std::cout << dict;
     /*
     Dictionary<std::string,int,hashstr> dick;
     int cost1 = 2500;
