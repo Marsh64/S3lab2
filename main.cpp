@@ -195,20 +195,47 @@ IndexingForPerson::Attributies MakeAttributies(){
 int main() {
 
 
-    IndexingForPerson::Attributies attrib = MakeAttributies();
+    //IndexingForPerson::Attributies attrib = MakeAttributies();
     ArraySequence<Person> p = MakeSequenceOfRandomPerson(100);
 
     std::cout << "Hello, World!" << std::endl;
-    std::cout << attrib;
+    //std::cout << attrib;
     std::cout << p << std::endl;
 
-    Dictionary<std::string, int, hashstr> bardict(BarGraph::SplittingByName(&p, SignsToHashByName));
-    std::cout << bardict << std::endl;
+    Caching cache(&p, 10);
 
-    std::cout << "indexing!" << std::endl;
+    std::cout << cache.GetCache() << std::endl;
 
-    Dictionary<std::string, Person*, hashstr> dict(*IndexingForPerson::Indexing(p, attrib));
-    std::cout << dict;
+    for (int i = 0 ;  i < 20; i++)
+        cache.Add(p.Get(0));
+
+    std::cout << cache.GetCache() << std::endl;
+    for (int i = 0 ;  i < 30; i++)
+        cache.Add(p.Get(3));
+
+    std::cout << cache.GetCache() << std::endl;
+    /*
+
+    Dictionary<std::string, int, hashstr> bardictfn(BarGraph::SplittingByName(&p, BarGraph::SignsToHashByFirstName));
+    std::cout << bardictfn << std::endl;
+
+    Dictionary<std::string, int, hashstr> bardictmn(BarGraph::SplittingByName(&p, BarGraph::SignsToHashByMiddleName));
+    std::cout << bardictmn << std::endl;
+
+    Dictionary<std::string, int, hashstr> bardictln(BarGraph::SplittingByName(&p, BarGraph::SignsToHashByLastName));
+    std::cout << bardictln << std::endl;
+
+    Dictionary<int, int, hashint> bardictby(BarGraph::SplittingByYears(&p, BarGraph::SignsToHashByBirthYear));
+    std::cout << bardictby << std::endl;
+
+    Dictionary<int, int, hashint> bardictage(BarGraph::SplittingByYears(&p, BarGraph::SignsToHashByAge));
+    std::cout << bardictage << std::endl;
+
+     */
+    //std::cout << "indexing!" << std::endl;
+
+    //Dictionary<std::string, Person*, hashstr> dict(*IndexingForPerson::Indexing(p, attrib));
+    //std::cout << dict << std::endl;
     /*
     Dictionary<std::string,int,hashstr> dick;
     int cost1 = 2500;

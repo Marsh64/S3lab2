@@ -102,7 +102,7 @@ public:
         if (index < 0 || index > this->GetLength()){throw IndexOutOfRange();}
 
         dynamicArray.Resize(dynamicArray.GetLength() + 1);
-        for (int i = dynamicArray.GetLength() - 1; i > index; i++){
+        for (int i = dynamicArray.GetLength() - 1; i > index; i--){
             dynamicArray[i] = dynamicArray[i - 1];
         }
         dynamicArray[index] = item;

@@ -26,10 +26,6 @@ void DynamicArray<T>::Resize(int newLenght /* подразумевается м�
     if (newLenght == lenght){return;}// длина не изменится
 
     if (newLenght < lenght){
-        //for (int i = newLenght; i < lenght; i++){
-        //    array[i] = nullptr;
-        //}
-
         lenght = newLenght;
         return;
     }// укорачивание массива

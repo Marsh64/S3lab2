@@ -14,7 +14,6 @@ private:
     static bool cmp_default(const T& t1, const T& t2) {return t1 > t2;}
     bool(*cmp)(const T& t1, const T& t2) = cmp_default;
 public:
-
     class IndexOutOfRange : ArraySequence<T> :: IndexOutOfRange{};
     SortedSequence() : ArraySequence<T>(){};
 
@@ -27,7 +26,7 @@ public:
     T GetLast(){
         return this->ArraySequence<T>::GetLast();
     }
-    int GetLenght(){
+    int GetLength(){
         return this->ArraySequence<T>::GetLength();
     }
     void Remove(int from, int to){
@@ -38,14 +37,14 @@ public:
     }
 
     void Add(const T& ob){
-        if (this->GetLenght() == 0){
+        if (this->GetLength() == 0){
             this->Append(ob);
             return;
         }
 
         //this->ArraySequence<T>::append(element);
         int left = 0;
-        int right = GetLenght() - 1;
+        int right = GetLength() - 1;
 
         while (left < right){
             int mid = (right + left) / 2;

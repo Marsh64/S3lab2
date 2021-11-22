@@ -194,23 +194,6 @@ public:
         return arr;
     }//дает массив всех элементов по индексу в массиве (то есть те, у кого одинаковый хэш)
 
-    /*
-    DynamicArray<TElement> Get_iElement(int index){
-        if (table[index] == nullptr)
-            throw AbsenceOfIndex();
-
-        DynamicArray<TElement> arr;
-
-        for (auto temp = table[index]; temp->next != nullptr; temp = temp->next){
-            arr.Resize(arr.GetLength() + 1);
-            //arr.Relen(arr.Relen() + 1);
-            arr.Set(arr.GetLength() - 1, temp->element);
-        }
-
-        return arr;
-    }//дает элемент по индексу в массиве
-    */
-
     const DynamicArray<TElement>& Get(TKey key){
         int index = hashfunction(key, size);
 

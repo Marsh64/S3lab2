@@ -7,6 +7,7 @@
 #include "Sequence.h"
 #include "Person.h"
 #include "SortedSequence.h"
+#include <iostream>
 
 class Caching {
 private:
@@ -19,20 +20,18 @@ private:
         }
 
         friend std::ostream& operator<< (std::ostream &out, const  NodePerson &ndp){
-            return std::cout << "{ " << ndp.callcount << " : " << ndp.person << " }   ";
+            return std::cout << "[ " << ndp.person<< " : " << ndp.callcount << " ]   ";
         }
     };
 
     SortedSequence<NodePerson> cache;
-    //Dictionary<int, Person*, hashint> dict;
     Sequence<Person>* seq;
-
     size_t cachesize;
 public:
     Caching(Sequence<Person>* SeqOfPerson, size_t newcachesize){
         seq = SeqOfPerson;
         cachesize = newcachesize;
-        for (int i = 0; i < cache.GetLenght(); i++){
+        for (int i = 0; i < cachesize; i++){
             cache.Add({1, &SeqOfPerson->Get(i)});
         }
     }
@@ -43,6 +42,7 @@ public:
                 return i;
         return -1;
     }
+
     bool ContainInCache(const Person& person){
         if (cachesize == 0)
             return false;
@@ -58,7 +58,7 @@ public:
             //cache[index].person;
             //cache[index].callcount;
             NodePerson ndm = {cache[index].callcount + 1, cache[index].person};
-            if (index == cachesize)
+            if (index == cachesize - 1)
                 cache.RemoveLast();
             else
                 cache.Remove(index, index + 1);
@@ -70,7 +70,7 @@ public:
         }
     }
 
-    const SortedSequence<NodePerson>& GetCache(){
+    SortedSequence<NodePerson>& GetCache(){
         return cache;
     }
 

@@ -8,13 +8,25 @@
 #include "IDictionary.h"
 #include "Person.h"
 
-std::string SignsToHashByName(Person person){
-    return person.GetFirstName();
-}
 
-class BarGraph {
-public:
-    static Dictionary<std::string, int, hashstr> SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
+namespace BarGraph {
+    std::string SignsToHashByFirstName(Person person){
+        return person.GetFirstName();
+    }
+    std::string SignsToHashByMiddleName(Person person){
+        return person.GetMiddleName();
+    }
+    std::string SignsToHashByLastName(Person person){
+        return person.GetLastName();
+    }
+    int SignsToHashByBirthYear(Person person){
+        return person.GetBirthYear();
+    }
+    int SignsToHashByAge(Person person){
+        return person.GetAge();
+    }
+
+    Dictionary<std::string, int, hashstr> SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
         Dictionary<std::string, int, hashstr> dict;
 
         //std::cout << "keys: ";
@@ -38,6 +50,24 @@ public:
                 //int count = dict.GetFirstHash(SignsToHash(list->Get(i)));
                 //dict.Remove(SignsToHash(list->Get(i)));
                 //dict.Add(SignsToHash(list->Get(i)), count + 1);
+            }
+            else{
+                dict.Add(SignsToHash(list->Get(i)),  1);
+            }
+        }
+
+        return dict;
+    }
+    Dictionary<int, int, hashint> SplittingByYears(Sequence<Person>* list, int (*SignsToHash)(Person)){
+        Dictionary<int, int, hashint> dict;
+
+        for (int i = 0 ; i < list->GetLength(); i++){
+            if (!dict.ContainsKey(SignsToHash(list->Get(i))))
+                dict.Add(SignsToHash(list->Get(i)), 0);
+        }
+        for (int i = 0; i < list->GetLength(); i++){
+            if (dict.ContainsKey(SignsToHash(list->Get(i)))){
+                dict.Swap(SignsToHash(list->Get(i)), dict.GetFirstHash(SignsToHash(list->Get(i))) + 1);
             }
             else{
                 dict.Add(SignsToHash(list->Get(i)),  1);

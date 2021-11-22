@@ -132,7 +132,8 @@ public:
                     tohash += std::to_string(SeqOfPerson.Get(i).GetAge());
             }
 
-            index->Add(tohash, &SeqOfPerson.Get(i));
+            if (!tohash.empty())
+                index->Add(tohash, &SeqOfPerson.Get(i));
         }
         return index;
     }//все атрибуты переделаются в строку и запишутся в таблицу а в значение положиться указатель на человека с этими атрибутами
