@@ -32,7 +32,7 @@ public:
         seq = SeqOfPerson;
         cachesize = newcachesize;
         for (int i = 0; i < cachesize; i++){
-            cache.Add({1, &SeqOfPerson->Get(i)});
+            cache.Add({0, &SeqOfPerson->Get(i)});
         }
     }
 
@@ -55,8 +55,6 @@ public:
     void Add(const Person& person){
         if (ContainInCache(person)){
             int index = FindInCache(person);
-            //cache[index].person;
-            //cache[index].callcount;
             NodePerson ndm = {cache[index].callcount + 1, cache[index].person};
             if (index == cachesize - 1)
                 cache.RemoveLast();

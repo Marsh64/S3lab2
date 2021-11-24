@@ -31,37 +31,6 @@ namespace CmpFuncForAttributies{
 }
 
 class IndexingForPerson {
-private:
-    /*
-    *int makeAttrib(Sequence<std::string>& SeqOfAttrib){
-    *    int a;
-    *    if (SeqOfAttrib.GetLength() != 0){
-    *        a = SeqOfAttrib.GetLength();
-    *
-    *        for (int i = 0; i < a; i++) {
-    *            a *= 10;
-    *
-    *            int b;
-    *            if (SeqOfAttrib.Get(i) == "FirstName")
-    *                b = 1;
-    *            else if (SeqOfAttrib.Get(i) == "MiddleName")
-    *                b = 2;
-    *            else if (SeqOfAttrib.Get(i) == "LastName")
-    *                b = 3;
-    *            else if (SeqOfAttrib.Get(i) == "BirthYear")
-    *                b = 4;
-    *            else if (SeqOfAttrib.Get(i) == "Age")
-    *                b = 5;
-    *
-    *            a+= b;
-    *        }
-    *    }
-    *    else{
-    *        a = 0;
-    *    }
-    *    return a;
-    *}
-    */
 public:
 
     struct Attributies{

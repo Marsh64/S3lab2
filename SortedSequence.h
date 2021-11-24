@@ -26,7 +26,7 @@ public:
     T GetLast(){
         return this->ArraySequence<T>::GetLast();
     }
-    int GetLength(){
+    int GetLength() const {
         return this->ArraySequence<T>::GetLength();
     }
     void Remove(int from, int to){

@@ -63,7 +63,7 @@ public:
 
         return new_arraySequence;
     }//Получить список из всех элементов, начиная с startIndex и заканчивая endIndex
-    int GetLength(){
+    int GetLength() const {
         return dynamicArray.GetLength();
     }//Возвращает длину последовательности
 

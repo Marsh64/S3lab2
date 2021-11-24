@@ -13,7 +13,7 @@ public:
     virtual T GetLast() = 0;//Получение последнего элемента
     virtual T& Get(int index) = 0;//Получение элемента по индексу
     virtual Sequence<T>* GetSubsequence(int startIndex, int endIndex) = 0;//Получене списка элемента по индексам
-    virtual int GetLength() = 0;//Получение длины последовательности
+    virtual int GetLength() const = 0;//Получение длины последовательности
 
     //Операции
     virtual T Pop() = 0;//Удаляет последний элемент в последовательности и возвращает его
