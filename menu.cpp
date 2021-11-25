@@ -1,8 +1,13 @@
 //
 // Created by adm on 22.11.2021.
 //
+#ifndef S3_LABORATORY_WORK_2_MENU_CPP
+#define S3_LABORATORY_WORK_2_MENU_CPP
 
 #include "menu.h"
+#include "tests.h"
+
+
 ArraySequence<Person> MakeSequenceOfRandomPerson(int count){
     if (count <= 0)
         return ArraySequence<Person>();
@@ -45,11 +50,12 @@ void menu(){
         std::cout << "Чем вы хотите заняться?:\n"
                      "\t 1. Поиском данных\n"
                      "\t 2. Распределением объектов на группы\n"
+                     "\t 3. Тесты\n"
                      "\t (Выход - любая отличная цифра)\n"
                      ":::";
         std::cin >> k;
 
-        if (k != 1 && k != 2)
+        if (k <= 0 || k > 3)
             break;
 
         switch (k) {
@@ -58,6 +64,9 @@ void menu(){
                 break;
             case 2:
                 MenuBarGraph();
+                break;
+            case 3:
+                tests();
                 break;
             default:
                 break;
@@ -349,6 +358,9 @@ void MenuDataSearch(){
                      ":::";
         std::cin >> type;
 
+        if (type!= 1 && type != 2)
+            break;
+
         if (type == 1)
             MenuCaching();
         else
@@ -416,3 +428,5 @@ void MenuBarGraph(){
             std::cout << dictionary2 << std::endl;
     }
 };
+
+#endif //S3_LABORATORY_WORK_2_MENU_CPP

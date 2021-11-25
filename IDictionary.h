@@ -194,24 +194,21 @@ public:
         return arr;
     }//дает массив всех элементов по индексу в массиве (то есть те, у кого одинаковый хэш)
 
-    const DynamicArray<TElement>& Get(TKey key){
+    TElement Get(TKey key){
         int index = hashfunction(key, size);
 
         if (table[index] == nullptr)
             throw AbsenceOfIndex();
 
-        DynamicArray<TElement> arr;
+        TElement element;
 
-        for (auto temp = table[index]; temp!= nullptr; temp = temp->next){
-            if (temp->key == key){
-                arr.Resize(arr.GetLength() + 1);
-                //arr.Relen(arr.Relen() + 1);
-                arr.Set(arr.GetLength() - 1, temp->element);
-            }
+        for (auto temp = table[index]; temp != nullptr; temp = temp->next){
+            if (temp->key == key)
+                return temp->element;
         }
 
-        return &arr;
-    }//Дает массив значений таблицы с этим ключом
+        return element;
+    }//Дает значение лежащее по этому ключу
 
     void Swap(TKey key, TElement newelement){
         int index = hashfunction(key, size);
@@ -230,9 +227,6 @@ public:
 
     const TElement& GetFirstHash(TKey key){
         int index = hashfunction(key, size);
-
-        //if (table[index] == nullptr)
-        //    throw AbsenceOfIndex();
 
         for (auto temp = table[index]; temp != nullptr; temp = temp->next){
             if (temp->key == key){

@@ -11,7 +11,6 @@
 #include "Indexing.h"
 #include "Caching.h"
 
-
 void menu();
 void MenuDataSearch();
 void MenuBarGraph();

@@ -51,8 +51,6 @@ public:
         bool (*CmpAge)(const int&, const int&);
     };
 
-
-
     static Dictionary<std::string, Person*, hashstr>* Indexing(Sequence<Person>& SeqOfPerson, Attributies attrib){
         auto* index = new Dictionary<std::string, Person*, hashstr>();
 
@@ -108,7 +106,7 @@ public:
     }//все атрибуты переделаются в строку и запишутся в таблицу а в значение положиться указатель на человека с этими атрибутами
 };
 
-std::ostream &operator << (std::ostream &cout, IndexingForPerson::Attributies& attrib) {
+static std::ostream &operator << (std::ostream &cout, IndexingForPerson::Attributies& attrib) {
     std::cout << "Атрибуты для индекса{\n";
     if (attrib.FirstName){
         if (attrib.CmpFirstName != nullptr)

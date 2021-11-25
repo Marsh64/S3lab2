@@ -4,29 +4,30 @@
 
 #ifndef S3_LABORATORY_WORK_2_BARGRAPH_H
 #define S3_LABORATORY_WORK_2_BARGRAPH_H
+
 #include "Sequence.h"
 #include "IDictionary.h"
 #include "Person.h"
 
 
 namespace BarGraph {
-    std::string SignsToHashByFirstName(Person person){
+    static std::string SignsToHashByFirstName(Person person){
         return person.GetFirstName();
     }
-    std::string SignsToHashByMiddleName(Person person){
+    static std::string SignsToHashByMiddleName(Person person){
         return person.GetMiddleName();
     }
-    std::string SignsToHashByLastName(Person person){
+    static std::string SignsToHashByLastName(Person person){
         return person.GetLastName();
     }
-    int SignsToHashByBirthYear(Person person){
+    static int SignsToHashByBirthYear(Person person){
         return person.GetBirthYear();
     }
-    int SignsToHashByAge(Person person){
+    static int SignsToHashByAge(Person person){
         return person.GetAge();
     }
 
-    Dictionary<std::string, int, hashstr> SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
+    static Dictionary<std::string, int, hashstr> SplittingByName(Sequence<Person>* list, std::string (*SignsToHash)(Person)){
         Dictionary<std::string, int, hashstr> dict;
 
         for (int i = 0 ; i < list->GetLength(); i++){
@@ -45,7 +46,7 @@ namespace BarGraph {
 
         return dict;
     }
-    Dictionary<int, int, hashint> SplittingByYears(Sequence<Person>* list, int (*SignsToHash)(Person)){
+    static Dictionary<int, int, hashint> SplittingByYears(Sequence<Person>* list, int (*SignsToHash)(Person)){
         Dictionary<int, int, hashint> dict;
 
         for (int i = 0 ; i < list->GetLength(); i++){

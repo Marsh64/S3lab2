@@ -28,9 +28,13 @@ private:
     Sequence<Person>* seq;
     size_t cachesize;
 public:
+    class SizeMismatch{};
+
     Caching(Sequence<Person>* SeqOfPerson, size_t newcachesize){
         seq = SeqOfPerson;
         cachesize = newcachesize;
+        if (newcachesize > SeqOfPerson->GetLength())
+            throw SizeMismatch();
         for (int i = 0; i < cachesize; i++){
             cache.Add({0, &SeqOfPerson->Get(i)});
         }
