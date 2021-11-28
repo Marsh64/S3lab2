@@ -19,5 +19,4 @@ void DoUWTS(ArraySequence<Person>&);
 IndexingForPerson::Attributies MakeAttributies();
 void MenuCaching();
 void MenuIndexing();
-
 #endif //S3_LABORATORY_WORK_2_MENU_H

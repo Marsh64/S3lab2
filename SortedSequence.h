@@ -13,6 +13,7 @@ class SortedSequence : private ArraySequence<T> {
 private:
     static bool cmp_default(const T& t1, const T& t2) {return t1 > t2;}
     bool(*cmp)(const T& t1, const T& t2) = cmp_default;
+
 public:
     class IndexOutOfRange : ArraySequence<T> :: IndexOutOfRange{};
     SortedSequence() : ArraySequence<T>(){};

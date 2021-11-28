@@ -6,7 +6,7 @@
 
 #include "menu.h"
 #include "tests.h"
-
+#include "getTime.h"
 
 ArraySequence<Person> MakeSequenceOfRandomPerson(int count){
     if (count <= 0)
@@ -51,11 +51,12 @@ void menu(){
                      "\t 1. Поиском данных\n"
                      "\t 2. Распределением объектов на группы\n"
                      "\t 3. Тесты\n"
+                     "\t 4. Таймирование\n"
                      "\t (Выход - любая отличная цифра)\n"
                      ":::";
         std::cin >> k;
 
-        if (k <= 0 || k > 3)
+        if (k <= 0 || k > 4)
             break;
 
         switch (k) {
@@ -68,6 +69,12 @@ void menu(){
             case 3:
                 tests();
                 break;
+            case 4:
+            {
+                GetTimeFCache();
+                GetTimeFIndexing();
+                break;
+            }
             default:
                 break;
         }
@@ -428,5 +435,6 @@ void MenuBarGraph(){
             std::cout << dictionary2 << std::endl;
     }
 };
+
 
 #endif //S3_LABORATORY_WORK_2_MENU_CPP
